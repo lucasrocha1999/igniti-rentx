@@ -5,7 +5,7 @@
     "description": "This is an API Rent",
     "version": "1.0.0",
     "contact": {
-      "email": "dani@rocketseat.com.br"
+      "email": "nlnadialigia@gmail.com"
     }
   },
   "paths": {
@@ -13,24 +13,12 @@
       "post": {
         "tags": ["Category"],
         "summary": "Create a category",
-        "descrition": "Create a new category",
+        "description": "Create a new category",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "name": "category name sample",
-                  "description": "category descrition sample"
-                }
+                "$ref": "#/definitions/Category"
               }
             }
           }
@@ -50,34 +38,23 @@
         "description": "List all categories",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Sucess",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      }
+                  "$ref": "#/definitions/Category"
                     }
                   }
                 }
               }
-            }
-          }
         }
       }
     },
     "/categories/import": {
       "post": {
         "tags": ["Category"],
-        "summary": "Upload a new Category",
-        "description": "Upload a new Category",
+        "summary": "Upload categories",
+        "description": "Upload categories from a csv file.",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -94,7 +71,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Created"
           }
         }

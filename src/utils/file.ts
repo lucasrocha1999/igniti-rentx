@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import fs from 'fs';
 
-export const deleFile = async (filename: string): Promise<void> => {
+export const deleFile = async (filename: string) => {
   try {
     await fs.promises.stat(filename);
   } catch {

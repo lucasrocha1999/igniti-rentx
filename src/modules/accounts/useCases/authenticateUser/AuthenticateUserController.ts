@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 class AuthenticateUserController {
@@ -11,7 +10,7 @@ class AuthenticateUserController {
 
     const token = await authenticateUserUseCase.execute({
       email,
-      password,
+      password
     });
 
     return response.json(token);
