@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { SpecificationsRepository } from '@modules/cars/infra/typeorm/repositories/SpecificationsRepository';
+
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository';
 import { AppError } from '@shared/errors/AppError';
 
@@ -11,7 +11,7 @@ interface IRequest {
 @injectable()
 class CreateSpecificationUseCase {
   constructor(
-    @inject(SpecificationsRepository)
+    @inject('SpecificationsRepository')
     private specificationsRepository: ISpecificationsRepository
   ) {}
 
@@ -21,10 +21,10 @@ class CreateSpecificationUseCase {
     );
 
     if (specificationAlreadyExists) {
-      throw new AppError('Specification Already Exists');
+      throw new AppError('Specification already exists!');
     }
 
-    this.specificationsRepository.create({ name, description });
+    await this.specificationsRepository.create({ name, description });
   }
 }
 

@@ -1,13 +1,15 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn
+  PrimaryColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
+
 import { Category } from './Category';
 import { Specification } from './Specification';
 
@@ -26,10 +28,10 @@ class Car {
   daily_rate: number;
 
   @Column()
-  license_plate: string;
+  available: boolean;
 
   @Column()
-  available: boolean;
+  license_plate: string;
 
   @Column()
   fine_amount: number;
@@ -37,27 +39,27 @@ class Car {
   @Column()
   brand: string;
 
-  @JoinColumn({ name: 'category_id' })
-  @ManyToOne(() => Category)
-  category: Category;
-
   @Column()
   category_id: string;
 
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
+
   @ManyToMany(() => Specification)
   @JoinTable({
-    name: 'specifications_car',
+    name: 'specifications_cars',
     joinColumns: [{ name: 'car_id' }],
-    inverseJoinColumns: [{ name: 'specification_id' }]
+    inverseJoinColumns: [{ name: 'specification_id' }],
   })
   specifications: Specification[];
 
-  @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   constructor() {
     if (!this.id) {
-      this.id = uuid();
+      this.id = uuidV4();
       this.available = true;
     }
   }

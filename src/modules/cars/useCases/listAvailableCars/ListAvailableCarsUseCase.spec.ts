@@ -1,31 +1,25 @@
-import crypto from 'crypto';
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
+
 import { ListAvailableCarsUseCase } from './ListAvailableCarsUseCase';
 
 let listAvailableCarsUseCase: ListAvailableCarsUseCase;
-let carsRepositoryInMemory: CarsRepositoryInMemory;
+let carsRepository: CarsRepositoryInMemory;
 
-const generate = () => {
-  return crypto.randomBytes(10).toString('hex');
-};
-
-describe('List Cars', () => {
+describe('List Available Cars', () => {
   beforeEach(() => {
-    carsRepositoryInMemory = new CarsRepositoryInMemory();
-    listAvailableCarsUseCase = new ListAvailableCarsUseCase(
-      carsRepositoryInMemory
-    );
+    carsRepository = new CarsRepositoryInMemory();
+    listAvailableCarsUseCase = new ListAvailableCarsUseCase(carsRepository);
   });
 
-  it('Should be able to list all available cars', async () => {
-    const car = await carsRepositoryInMemory.create({
-      name: generate(),
-      description: generate(),
-      daily_rate: 150,
-      license_plate: generate(),
-      fine_amount: 50,
-      brand: generate(),
-      category_id: generate()
+  it('should able to list all available cars', async () => {
+    const car = await carsRepository.create({
+      name: 'Car1',
+      description: 'Car description',
+      daily_rate: 110.0,
+      license_plate: 'DEF-1234',
+      fine_amount: 40,
+      brand: 'Car_brand',
+      category_id: 'category_id',
     });
 
     const cars = await listAvailableCarsUseCase.execute({});
@@ -33,55 +27,55 @@ describe('List Cars', () => {
     expect(cars).toEqual([car]);
   });
 
-  it('Should be able to list all available cars by name', async () => {
-    const car = await carsRepositoryInMemory.create({
-      name: generate(),
-      description: generate(),
-      daily_rate: 150,
-      license_plate: generate(),
-      fine_amount: 50,
-      brand: generate(),
-      category_id: generate()
+  it('should be able to list all available cars by brand', async () => {
+    const car = await carsRepository.create({
+      name: 'Car2',
+      description: 'Car description',
+      daily_rate: 110.0,
+      license_plate: 'DEF-1234',
+      fine_amount: 40,
+      brand: 'Car_brand_test',
+      category_id: 'category_id',
     });
 
     const cars = await listAvailableCarsUseCase.execute({
-      name: car.name
+      brand: 'Car_brand_test',
     });
 
     expect(cars).toEqual([car]);
   });
 
-  it('Should be able to list all available cars by brandy', async () => {
-    const car = await carsRepositoryInMemory.create({
-      name: generate(),
-      description: generate(),
-      daily_rate: 150,
-      license_plate: generate(),
-      fine_amount: 50,
-      brand: generate(),
-      category_id: generate()
+  it('should be able to list all available cars by name', async () => {
+    const car = await carsRepository.create({
+      name: 'Car3',
+      description: 'Car description',
+      daily_rate: 110.0,
+      license_plate: 'DEF-1234',
+      fine_amount: 40,
+      brand: 'Car_brand_test',
+      category_id: 'category_id',
     });
 
     const cars = await listAvailableCarsUseCase.execute({
-      brand: car.brand
+      name: 'Car3',
     });
 
     expect(cars).toEqual([car]);
   });
 
-  it('Should be able to list all available cars by category_id', async () => {
-    const car = await carsRepositoryInMemory.create({
-      name: generate(),
-      description: generate(),
-      daily_rate: 150,
-      license_plate: generate(),
-      fine_amount: 50,
-      brand: generate(),
-      category_id: generate()
+  it('should be able to list all available cars by category_id', async () => {
+    const car = await carsRepository.create({
+      name: 'Car3',
+      description: 'Car description',
+      daily_rate: 110.0,
+      license_plate: 'DEF-1234',
+      fine_amount: 40,
+      brand: 'Car_brand_test',
+      category_id: '12345',
     });
 
     const cars = await listAvailableCarsUseCase.execute({
-      category_id: car.category_id
+      category_id: '12345',
     });
 
     expect(cars).toEqual([car]);
