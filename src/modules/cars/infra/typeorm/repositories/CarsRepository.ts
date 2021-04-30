@@ -13,6 +13,7 @@ class CarsRepository implements ICarsRepository {
   }
 
   async create({
+    id,
     brand,
     category_id,
     daily_rate,
@@ -21,9 +22,9 @@ class CarsRepository implements ICarsRepository {
     license_plate,
     name,
     specifications,
-    id,
   }: ICreateCarDTO): Promise<Car> {
     const car = this.repository.create({
+      id,
       brand,
       category_id,
       daily_rate,
@@ -32,11 +33,9 @@ class CarsRepository implements ICarsRepository {
       license_plate,
       name,
       specifications,
-      id,
     });
 
     await this.repository.save(car);
-
     return car;
   }
 
@@ -49,7 +48,6 @@ class CarsRepository implements ICarsRepository {
     const car = await this.repository.findOne({
       license_plate,
     });
-
     return car;
   }
 
@@ -60,31 +58,36 @@ class CarsRepository implements ICarsRepository {
   ): Promise<Car[]> {
     const carsQuery = await this.repository
       .createQueryBuilder('c')
-      .where('available = :available', { available: true });
+      .where('c.available = :available', { available: true });
 
     if (brand) {
-      carsQuery.andWhere('brand = :brand', { brand });
+      carsQuery.andWhere('c.brand = :brand', { brand });
     }
 
     if (name) {
-      carsQuery.andWhere('name = :name', { name });
+      carsQuery.andWhere('c.name = :name', { name });
     }
 
     if (category_id) {
-      carsQuery.andWhere('category_id = :category_id', { category_id });
+      carsQuery.andWhere('c.category_id = :category_id', { category_id });
     }
 
     const cars = await carsQuery.getMany();
     return cars;
   }
 
-  async updateAvailable(id: string, available: boolean): Promise<void> {
+  async updateAvailability(
+    car_id: string,
+    availability: boolean
+  ): Promise<void> {
     await this.repository
       .createQueryBuilder()
       .update()
-      .set({ available })
-      .where('id = :id')
-      .setParameters({ id })
+      .set({
+        available: availability,
+      })
+      .where('id = :car_id')
+      .setParameters({ car_id })
       .execute();
   }
 }

@@ -43,7 +43,9 @@ class Car {
   category_id: string;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({
+    name: 'category_id',
+  })
   category: Category;
 
   @ManyToMany(() => Specification)
